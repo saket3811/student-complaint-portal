@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Complaint Portal</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Login Check -->
+<script>
+if(!localStorage.getItem("uid")){
+  location.href="login.html";
+}
+</script>
+
+<style>
+body{
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  min-height:100vh;
+}
+
+.main-box{
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(12px);
+  border-radius:15px;
+  color:white;
+  box-shadow:0 8px 25px rgba(0,0,0,0.3);
+  position: relative;
+}
+
+.logout-btn{
+  position: fixed;
+  top:15px;
+  right:15px;
+  background:linear-gradient(135deg,#ff4b2b,#ff416c);
+  border:none;
+  color:white;
+  padding:6px 14px;
+  border-radius:18px;
+  font-size:12px;
+  font-weight:600;
+  z-index:999;
+}
+.logout-btn:hover{
+  opacity:.9;
+}
+
+label{
+  font-weight:500;
+}
+</style>
+</head>
+
+<body>
+
+<!-- Logout -->
+<button class="logout-btn" onclick="logout()">Logout</button>
+
+<div class="container py-5">
+
+<div class="row justify-content-center">
+
+<div class="col-lg-10">
+
+<div class="main-box p-4">
+
+<h3 class="text-center mb-2">Student Complaint Portal</h3>
+<p class="text-center mb-4">Submit your complaint carefully</p>
+
+
+<form id="complaintForm" enctype="multipart/form-data">
+
+<div class="row g-3">
+
+<!-- Name -->
+<div class="col-md-6">
+<label>Name</label>
+<input type="text" id="name" class="form-control" required>
+</div>
+
+<!-- Roll -->
+<div class="col-md-6">
+<label>Roll No</label>
+<input type="text" id="roll" class="form-control" required>
+</div>
+
+<!-- Hostel -->
+<div class="col-md-6">
+<label>Hostel</label>
+<select id="hostel" class="form-select">
+<option>A Block</option>
+<option>B Block</option>
+<option>C Block</option>
+<option>D Block</option>
+</select>
+</div>
+
+<!-- Room -->
+<div class="col-md-6">
+<label>Room No</label>
+<input type="text" id="room" class="form-control">
+</div>
+
+<!-- Category -->
+<div class="col-md-6">
+<label>Category</label>
+<select id="category" class="form-select">
+<option>Water</option>
+<option>Internet</option>
+<option>Electricity</option>
+<option>Hostel</option>
+<option>Food</option>
+<option>Other</option>
+</select>
+</div>
+
+<!-- Priority -->
+<div class="col-md-6">
+<label>Priority</label>
+<select id="priority" class="form-select">
+<option>Low</option>
+<option>Medium</option>
+<option>High</option>
+</select>
+</div>
+
+<!-- Message -->
+<div class="col-12">
+<label>Complaint Details</label>
+<textarea id="message" class="form-control" rows="4" required></textarea>
+</div>
+
+<!-- Photo -->
+<div class="col-md-6">
+<label>Upload Photo</label>
+<input type="file" id="photo" class="form-control">
+</div>
+
+<!-- Contact -->
+<div class="col-md-6">
+<label>Contact No</label>
+<input type="text" id="contact" class="form-control">
+</div>
+
+<!-- Submit -->
+<div class="col-12 text-center mt-3">
+<button type="submit" class="btn btn-warning px-5 fw-bold">
+Submit Complaint
+</button>
+</div>
+
+</div>
+
+</form>
+
+
+<div class="text-center mt-4">
+<a href="#" onclick="goAdmin()" class="text-warning">
+Go to Admin Panel
+</a>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+
+
+<script src="script.js"></script>
+
+<script>
+
+// Admin Check
+function goAdmin(){
+  if(localStorage.getItem("role")==="admin"){
+    location.href="admin.html";
+  }else{
+    alert("Admin only!");
+  }
+}
+
+// Logout
+function logout(){
+  localStorage.clear();
+  location.href="login.html";
+}
+
+
+// Submit Complaint
+document.getElementById("complaintForm")
+.addEventListener("submit",function(e){
+
+e.preventDefault();
+
+let formData = new FormData();
+
+formData.append("user_id", localStorage.getItem("uid"));
+formData.append("category", document.getElementById("category").value);
+formData.append("hostel", document.getElementById("hostel").value);
+formData.append("room", document.getElementById("room").value);
+formData.append("priority", document.getElementById("priority").value);
+formData.append("contact", document.getElementById("contact").value);
+formData.append("message", document.getElementById("message").value);
+
+if(document.getElementById("photo").files[0]){
+  formData.append("photo", document.getElementById("photo").files[0]);
+}
+
+fetch("http://localhost:3000/add-complaint",{
+method:"POST",
+body:formData
+})
+.then(res=>res.text())
+.then(msg=>{
+alert(msg);
+document.getElementById("complaintForm").reset();
+});
+
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel</title>
+
+<!-- Admin Check -->
+<script>
+if(localStorage.getItem("role")!=="admin"){
+  alert("Admin Only!");
+  location.href="login.html";
+}
+</script>
+
+<style>
+body{
+  background:linear-gradient(135deg,#667eea,#764ba2);
+  min-height:100vh;
+  padding:20px;
+  color:white;
+  font-family:Segoe UI;
+}
+
+.admin-container{
+  background:rgba(255,255,255,0.15);
+  backdrop-filter:blur(12px);
+  border-radius:15px;
+  padding:20px;
+  box-shadow:0 8px 25px rgba(0,0,0,.3);
+  max-width:1400px;
+  margin:auto;
+  overflow-x:auto;
+  position:relative;
+}
+
+h2{
+  text-align:center;
+  margin-bottom:15px;
+}
+
+/* Logout */
+.logout-btn{
+  position:absolute;
+  top:15px;
+  right:15px;
+  background:#ff4b2b;
+  border:none;
+  color:white;
+  padding:6px 14px;
+  border-radius:15px;
+  cursor:pointer;
+  font-size:12px;
+}
+
+.logout-btn:hover{
+  opacity:.8;
+}
+
+/* Table */
+table{
+  width:100%;
+  min-width:1200px;
+  border-collapse:collapse;
+}
+
+thead{
+  background:rgba(0,0,0,.3);
+}
+
+th,td{
+  padding:8px;
+  text-align:center;
+  font-size:13px;
+  border-bottom:1px solid rgba(255,255,255,.2);
+}
+
+tbody tr:nth-child(even){
+  background:rgba(255,255,255,.08);
+}
+
+tbody tr:hover{
+  background:rgba(255,255,255,.15);
+}
+
+img{
+  width:35px;
+  height:35px;
+  border-radius:50%;
+  border:2px solid #ffd369;
+}
+
+.btn-resolve{
+  background:#2ecc71;
+  border:none;
+  padding:5px 10px;
+  border-radius:6px;
+  cursor:pointer;
+  font-size:11px;
+  font-weight:600;
+}
+
+.btn-resolve:hover{
+  opacity:.8;
+}
+</style>
+</head>
+
+<body>
+
+<div class="admin-container">
+
+<button class="logout-btn" onclick="logout()">Logout</button>
+
+<h2>Admin Panel</h2>
+
+<table>
+
+<thead>
+<tr>
+  <th>Name</th>
+  <th>Roll</th>
+
+  <th>Hostel</th>
+  <th>Room</th>
+
+  <th>Category</th>
+
+  <th>Priority</th>
+  <th>Contact</th>
+
+  <th>Message</th>
+
+  <th>Photo</th>
+
+  <th>Status</th>
+
+  <th>Action</th>
+</tr>
+</thead>
+
+<tbody id="data">
+</tbody>
+
+</table>
+
+</div>
+
+
+<script src="script.js"></script>
+
+<script>
+function logout(){
+  localStorage.clear();
+  location.href="login.html";
+}
+</script>
+
+</body>
+</html>
